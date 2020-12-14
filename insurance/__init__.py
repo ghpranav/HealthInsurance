@@ -5,8 +5,8 @@ def create_app():
     """Function to create and return an application"""
     app = Flask(__name__, static_url_path="/static")
     mysql = MySQL()
-    app.config['MYSQL_DATABASE_USER'] = 'ghpranav'
-    app.config['MYSQL_DATABASE_PASSWORD'] = 'pranav123'
+    app.config['MYSQL_DATABASE_USER'] = 'root'
+    app.config['MYSQL_DATABASE_PASSWORD'] = 'PRUTHVI@2000'
     app.config['MYSQL_DATABASE_DB'] = 'Health_Insurance'
     app.config['MYSQL_DATABASE_HOST'] = 'localhost'
     mysql.init_app(app)
@@ -30,6 +30,7 @@ def create_app():
     def about():
         return render_template("about.html")
 
+    
     @app.route("/buy/<policyID>", methods=['GET', 'POST'])
     def buy(policyID):
         if request.method == "POST":
@@ -78,6 +79,10 @@ def create_app():
     @app.route("/policy")
     def policy():
         return render_template("policy.html")
+
+    @app.route("/display")
+    def display():
+        return render_template("display.html")
 
     app.debug = True
     return app
