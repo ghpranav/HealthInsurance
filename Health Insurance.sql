@@ -5,8 +5,6 @@ USE `Health_Insurance`;
 SET NAMES utf8mb4 ;
 SET character_set_client = utf8mb4 ;
 
-
-
 CREATE TABLE `customers` (
   `Customer_id` int NOT NULL AUTO_INCREMENT,
   `First_name` varchar(50) NOT NULL,
@@ -16,23 +14,23 @@ CREATE TABLE `customers` (
   PRIMARY KEY (`Customer_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20201201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO `customers` VALUES (1,'Babara','MacCaffrey','1986-03-28','781-932-9754');
-INSERT INTO `customers` VALUES (2,'Ines','Brushfield','1986-04-13','804-427-9456');
-INSERT INTO `customers` VALUES (3,'Freddi','Boagey','1955-02-07','719-724-7869');
-INSERT INTO `customers` VALUES (4,'Ambur','Roseburgh','1974-04-14','407-231-8017');
-INSERT INTO `customers` VALUES (5,'Clemmie','Betchley','1973-11-07',NULL);
-INSERT INTO `customers` VALUES (6,'Elka','Twiddell','1991-09-04','312-480-8498');
-INSERT INTO `customers` VALUES (7,'Ilene','Dowson','1964-08-30','615-641-4759');
-INSERT INTO `customers` VALUES (8,'Thacher','Naseby','1993-07-17','941-527-3977');
-INSERT INTO `customers` VALUES (9,'Romola','Rumgay','1992-05-23','559-181-3744');
-INSERT INTO `customers` VALUES (10,'Levy','Mynett','1969-10-13','404-246-3370');
+-- INSERT INTO `customers` VALUES (1,'Babara','MacCaffrey','1986-03-28','781-932-9754');
+-- INSERT INTO `customers` VALUES (2,'Ines','Brushfield','1986-04-13','804-427-9456');
+-- INSERT INTO `customers` VALUES (3,'Freddi','Boagey','1955-02-07','719-724-7869');
+-- INSERT INTO `customers` VALUES (4,'Ambur','Roseburgh','1974-04-14','407-231-8017');
+-- INSERT INTO `customers` VALUES (5,'Clemmie','Betchley','1973-11-07',NULL);
+-- INSERT INTO `customers` VALUES (6,'Elka','Twiddell','1991-09-04','312-480-8498');
+-- INSERT INTO `customers` VALUES (7,'Ilene','Dowson','1964-08-30','615-641-4759');
+-- INSERT INTO `customers` VALUES (8,'Thacher','Naseby','1993-07-17','941-527-3977');
+-- INSERT INTO `customers` VALUES (9,'Romola','Rumgay','1992-05-23','559-181-3744');
+-- INSERT INTO `customers` VALUES (10,'Levy','Mynett','1969-10-13','404-246-3370');
 
 CREATE TABLE `Address` (
   `Customer_id` int NOT NULL,
   `DoorNo.` varchar(10) NOT NULL,
   `Street/Area` varchar(50) NOT NULL,
   `City` varchar(50) NOT NULL,
-  `State` varchar(3) NOT NULL,
+  `State` varchar(15) NOT NULL,
   PRIMARY KEY (`Customer_id`),
   KEY `fk_Address_customers_idx` (`Customer_id`),
   CONSTRAINT `fk_Address_customers` FOREIGN KEY (`Customer_id`) REFERENCES `customers` (`Customer_id`) ON UPDATE CASCADE
@@ -54,7 +52,7 @@ INSERT INTO `Insurance_Policy` VALUES (3,'Medicall','Health',2500,250000);
 CREATE TABLE `Holds` (
   `Customer_id` int NOT NULL,
   `PolicyID` varchar(10) NOT NULL,
-  `Policy_number` int NOT NULL AUTO_INCREMENT,
+  `Policy_number` varchar(10) NOT NULL,
   `Start_date` date NOT NULL,
   `Renewal_date` date DEFAULT NULL,
   PRIMARY KEY (`Policy_number`),
@@ -67,16 +65,13 @@ CREATE TABLE `Holds` (
 
 CREATE TABLE `Claims` (
   `Customer_id` int NOT NULL,
-  `PolicyID` varchar(10) NOT NULL,
-  `Policy_number` int NOT NULL,
+  `Policy_number` varchar(10) NOT NULL,
   `Issued_amount` int NOT NULL,
-  `Issued_year` year,
+  `Issued_year` varchar(4),
   PRIMARY KEY (`Policy_number`,`Issued_year`),
   KEY `fk_Claims_customers_idx` (`Customer_id`),
-  KEY `fk_Claims_insurance_policy_idx` (`PolicyID`),
   KEY `fk_Claims_Holds_idx` (`Policy_number`),
   CONSTRAINT `fk_Claims_customers` FOREIGN KEY (`Customer_id`) REFERENCES `customers` (`Customer_id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_Claims_insurance_policy` FOREIGN KEY (`PolicyID`) REFERENCES `insurance_policy` (`PolicyID`) ON UPDATE CASCADE,
   CONSTRAINT `fk_Claims_Holds` FOREIGN KEY (`Policy_number`) REFERENCES `Holds` (`Policy_number`) ON UPDATE CASCADE
   ) ENGINE=InnoDB CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
   
